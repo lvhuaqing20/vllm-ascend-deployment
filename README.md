@@ -173,8 +173,16 @@ VLLM_TARGET_DEVICE=npu python setup.py install
 # 6. 下载模型
 mkdir -p models
 cd models
+
+# 使用新的 hf 命令
+hf download Qwen/Qwen3-0.6B --local-dir qwen3-0.6b
+
+# 或使用 git clone（较慢）
 git clone https://huggingface.co/Qwen/Qwen3-0.6B qwen3-0.6b
-```
+
+# 国内用户可以使用镜像
+export HF_ENDPOINT=https://hf-mirror.com
+hf download Qwen/Qwen3-0.6B --local-dir qwen3-0.6b
 
 ## 📡 API使用
 
