@@ -1,0 +1,61 @@
+# Fast Thinking Mode Configuration
+# 快思考模式：适用于快速问答和实时对话场景
+
+model:
+  name: "Qwen3-0.6B"
+  path: "/models/qwen3-0.6b"
+  revision: "main"
+  dtype: "bfloat16"  # 使用bfloat16混合精度
+
+inference:
+  # 序列长度配置
+  max_model_len: 4096
+  max_num_seqs: 64
+  
+  # 内存管理
+  gpu_memory_utilization: 0.85
+  swap_space: 4  # GB
+  
+  # 设备配置
+  device: "npu"
+  device_id: 0
+  tensor_parallel_size: 1
+  
+  # KV Cache优化
+  enable_prefix_caching: true
+  block_size: 16
+  
+  # 性能优化
+  disable_log_requests: true
+  enforce_eager: false
+
+generation:
+  # 生成参数
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  max_tokens: 256
+  
+  # 停止条件
+  stop_tokens: ["</s>", "<|endoftext|>", "<|im_end|>"]
+  
+  # 采样配置
+  repetition_penalty: 1.05
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  
+  # 超时设置
+  timeout_keep_alive: 5
+  request_timeout: 60
+  
+  # 日志级别
+  log_level: "info"
+  
+  # API配置
+  api_key: null  # 如需认证，设置API key
+  response_role: "assistant"

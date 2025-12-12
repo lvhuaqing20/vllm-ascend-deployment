@@ -1,0 +1,66 @@
+# Slow Thinking Mode Configuration
+# 慢思考模式：适用于复杂推理和长文本生成场景
+
+model:
+  name: "Qwen3-0.6B"
+  path: "/models/qwen3-0.6b"
+  revision: "main"
+  dtype: "bfloat16"
+
+inference:
+  # 序列长度配置（更长的上下文）
+  max_model_len: 8192
+  max_num_seqs: 32  # 降低并发以支持更长序列
+  
+  # 内存管理（提高内存使用率）
+  gpu_memory_utilization: 0.90
+  swap_space: 8  # GB
+  
+  # 设备配置
+  device: "npu"
+  device_id: 0
+  tensor_parallel_size: 1
+  
+  # KV Cache优化
+  enable_prefix_caching: true
+  block_size: 16
+  
+  # 性能优化
+  disable_log_requests: true
+  enforce_eager: false
+
+generation:
+  # 生成参数（更保守的设置以提高质量）
+  temperature: 0.3
+  top_p: 0.95
+  top_k: 40
+  max_tokens: 1024  # 支持更长的输出
+  
+  # 停止条件
+  stop_tokens: ["</s>", "<|endoftext|>", "<|im_end|>"]
+  
+  # 采样配置
+  repetition_penalty: 1.1
+  frequency_penalty: 0.1
+  presence_penalty: 0.1
+  
+  # 思考链设置（用于复杂推理）
+  use_beam_search: false
+  best_of: 1
+  n: 1
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  
+  # 更长的超时时间以支持复杂推理
+  timeout_keep_alive: 10
+  request_timeout: 180  # 3分钟
+  
+  # 日志级别
+  log_level: "info"
+  
+  # API配置
+  api_key: null
+  response_role: "assistant"
